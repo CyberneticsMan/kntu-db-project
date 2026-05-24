@@ -9,17 +9,17 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 
-	"github.com/CyberneticsMan/kntu-db-project/controllers" // این مسیر را با نام ماژول خود جایگزین کنید
+	"github.com/CyberneticsMan/kntu-db-project/controllers"
 	"github.com/CyberneticsMan/kntu-db-project/routes"
 )
 
 func main() {
-	// ۱. بارگذاری متغیرهای محیطی از فایل .env
+	// 1. Load environment variables from .env file
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	// ۲. اتصال به دیتابیس (pgxpool)
+	// 2. Connect to database using pgxpool
 	dbURL := os.Getenv("DATABASE_URL")
 	dbPool, err := pgxpool.New(context.Background(), dbURL)
 	if err != nil {
@@ -27,15 +27,15 @@ func main() {
 	}
 	defer dbPool.Close()
 
-	// ۳. مقداردهی اولیه Gin
+	// 3. Initialize Gin router
 	router := gin.Default()
 
-	// ۴. تزریق وابستگی (Dependency Injection) به کنترلرها
+	// 4. Dependency injection for controllers
 	ticketController := &controllers.TicketController{DB: dbPool}
 
-	// ۵. تعریف روت‌ها
+	// 5. Define routes
 	routes.SetupRoutes(router, ticketController)
 
-	// ۶. اجرای سرور
+	// 6. Run server
 	router.Run(":8080")
 }
