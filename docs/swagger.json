@@ -89,6 +89,61 @@
                 }
             }
         },
+        "/tickets": {
+            "get": {
+                "description": "List tickets with optional filters",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tickets"
+                ],
+                "summary": "List tickets",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Ticket"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new ticket record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tickets"
+                ],
+                "summary": "Create ticket",
+                "parameters": [
+                    {
+                        "description": "Ticket payload",
+                        "name": "ticket",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Ticket"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Ticket"
+                        }
+                    }
+                }
+            }
+        },
         "/tickets/{id}": {
             "get": {
                 "description": "Get a ticket's details by its ID",
@@ -119,9 +174,93 @@
                         "description": "Ticket not found"
                     }
                 }
+            },
+            "put": {
+                "description": "Update an existing ticket record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tickets"
+                ],
+                "summary": "Update ticket",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Ticket ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Ticket payload",
+                        "name": "ticket",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Ticket"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Ticket"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a ticket by its ID",
+                "tags": [
+                    "tickets"
+                ],
+                "summary": "Delete ticket",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Ticket ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/users": {
+            "get": {
+                "description": "Get all users in the system",
+                "tags": [
+                    "users"
+                ],
+                "summary": "List users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserResponse"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create a new user with the provided details",
                 "consumes": [
@@ -297,18 +436,6 @@
                 },
                 "phone": {
                     "type": "string"
-                },
-                "role": {
-                    "enum": [
-                        "admin",
-                        "customer",
-                        "staff"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.UserRole"
-                        }
-                    ]
                 }
             }
         },
@@ -358,7 +485,22 @@
         "models.Ticket": {
             "type": "object",
             "properties": {
+                "away_team": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
                 "event_name": {
+                    "type": "string"
+                },
+                "event_time": {
+                    "type": "string"
+                },
+                "home_team": {
                     "type": "string"
                 },
                 "id": {
@@ -366,6 +508,15 @@
                 },
                 "price": {
                     "type": "number"
+                },
+                "remaining_capacity": {
+                    "type": "integer"
+                },
+                "sport_type": {
+                    "type": "string"
+                },
+                "venue": {
+                    "type": "string"
                 }
             }
         },

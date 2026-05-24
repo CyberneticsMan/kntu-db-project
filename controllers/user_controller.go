@@ -105,6 +105,27 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, models.NewUserResponse(updatedUser))
 }
 
+// ListUsers handles the GET request to fetch all users
+// @Summary List users
+// @Description Get all users in the system
+// @Tags users
+// @Success 200 {array} models.UserResponse
+// @Router /users [get]
+func (uc *UserController) ListUsers(c *gin.Context) {
+	users, err := uc.Service.ListUsers()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	responses := make([]models.UserResponse, 0, len(users))
+	for _, user := range users {
+		responses = append(responses, models.NewUserResponse(user))
+	}
+
+	c.JSON(http.StatusOK, responses)
+}
+
 // DeleteUser handles the DELETE request to delete a user
 // @Summary Delete a user
 // @Description Delete a user by their ID

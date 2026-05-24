@@ -20,13 +20,6 @@ definitions:
         type: string
       phone:
         type: string
-      role:
-        allOf:
-        - $ref: '#/definitions/models.UserRole'
-        enum:
-        - admin
-        - customer
-        - staff
     required:
     - email
     - first_name
@@ -66,12 +59,28 @@ definitions:
     type: object
   models.Ticket:
     properties:
+      away_team:
+        type: string
+      category:
+        type: string
+      city:
+        type: string
       event_name:
+        type: string
+      event_time:
+        type: string
+      home_team:
         type: string
       id:
         type: integer
       price:
         type: number
+      remaining_capacity:
+        type: integer
+      sport_type:
+        type: string
+      venue:
+        type: string
     type: object
   models.UpdateUserRequest:
     properties:
@@ -180,7 +189,61 @@ paths:
       summary: Register a new user
       tags:
       - auth
+  /tickets:
+    get:
+      description: List tickets with optional filters
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Ticket'
+            type: array
+      summary: List tickets
+      tags:
+      - tickets
+    post:
+      consumes:
+      - application/json
+      description: Create a new ticket record
+      parameters:
+      - description: Ticket payload
+        in: body
+        name: ticket
+        required: true
+        schema:
+          $ref: '#/definitions/models.Ticket'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Ticket'
+      summary: Create ticket
+      tags:
+      - tickets
   /tickets/{id}:
+    delete:
+      description: Delete a ticket by its ID
+      parameters:
+      - description: Ticket ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete ticket
+      tags:
+      - tickets
     get:
       description: Get a ticket's details by its ID
       parameters:
@@ -201,7 +264,45 @@ paths:
       summary: Get ticket by ID
       tags:
       - tickets
+    put:
+      consumes:
+      - application/json
+      description: Update an existing ticket record
+      parameters:
+      - description: Ticket ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Ticket payload
+        in: body
+        name: ticket
+        required: true
+        schema:
+          $ref: '#/definitions/models.Ticket'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Ticket'
+      summary: Update ticket
+      tags:
+      - tickets
   /users:
+    get:
+      description: Get all users in the system
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserResponse'
+            type: array
+      summary: List users
+      tags:
+      - users
     post:
       consumes:
       - application/json

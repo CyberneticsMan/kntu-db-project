@@ -33,14 +33,14 @@ func (ac *AuthController) Register(c *gin.Context) {
 		return
 	}
 
-	user, err := ac.AuthService.Register(&req)
+	token, user, err := ac.AuthService.Register(&req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusCreated, models.AuthResponse{
-		Token: "",
+		Token: token,
 		User:  models.NewUserResponse(user),
 	})
 }
