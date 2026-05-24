@@ -70,6 +70,32 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, models.NewUserResponse(createdUser))
 }
 
+// CreatePrivilegedUser handles admin-only creation of staff/admin users
+// @Summary Create privileged user
+// @Description Create a staff or admin user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param userRequest body models.CreatePrivilegedUserRequest true "Privileged user creation request"
+// @Success 201 {object} models.UserResponse
+// @Failure 400 "Invalid request body"
+// @Router /admin/users [post]
+func (uc *UserController) CreatePrivilegedUser(c *gin.Context) {
+	var req models.CreatePrivilegedUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	createdUser, err := uc.Service.CreatePrivilegedUser(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, models.NewUserResponse(createdUser))
+}
+
 // UpdateUser handles the PUT request to update a user
 // @Summary Update an existing user
 // @Description Update a user's details

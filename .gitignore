@@ -21,3 +21,4 @@ vendor/
 *.coverprofile
 *.out
 tmp/
+doctmp/

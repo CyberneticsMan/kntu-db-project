@@ -2,6 +2,8 @@ package routes
 
 import (
 	"github.com/CyberneticsMan/kntu-db-project/controllers"
+	"github.com/CyberneticsMan/kntu-db-project/middleware"
+	"github.com/CyberneticsMan/kntu-db-project/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,25 +14,40 @@ func SetupRoutes(router *gin.Engine, tc *controllers.TicketController, uc *contr
 		api.POST("/auth/login", ac.Login)
 
 		api.GET("/tickets", tc.ListTickets)
-		api.POST("/tickets", tc.CreateTicket)
 		api.GET("/tickets/:id", tc.GetTicket)
-		api.PUT("/tickets/:id", tc.UpdateTicket)
-		api.DELETE("/tickets/:id", tc.DeleteTicket)
 
-		api.GET("/users", uc.ListUsers)
-		api.GET("/users/:id", uc.GetUser)
-		api.POST("/users", uc.CreateUser)
-		api.PUT("/users/:id", uc.UpdateUser)
-		api.DELETE("/users/:id", uc.DeleteUser)
+		authenticated := api.Group("")
+		authenticated.Use(middleware.Auth())
+		{
+			authenticated.POST("/users", uc.CreateUser)
+			authenticated.GET("/users/:id", uc.GetUser)
+			authenticated.PUT("/users/:id", uc.UpdateUser)
+			authenticated.DELETE("/users/:id", uc.DeleteUser)
 
-		api.POST("/reservations", rc.CreateReservation)
-		api.GET("/reservations/:id", rc.GetReservation)
-		api.GET("/users/:id/reservations", rc.ListUserReservations)
-		api.POST("/reservations/:id/cancel", rc.CancelReservation)
-		api.POST("/reservations/:id/pay", rc.PayReservation)
+			authenticated.POST("/reservations", rc.CreateReservation)
+			authenticated.GET("/reservations/:id", rc.GetReservation)
+			authenticated.GET("/users/:id/reservations", rc.ListUserReservations)
+			authenticated.POST("/reservations/:id/cancel", rc.CancelReservation)
+			authenticated.POST("/reservations/:id/pay", rc.PayReservation)
 
-		api.POST("/reports", rcpt.CreateReport)
-		api.GET("/reports/:id", rcpt.GetReport)
-		api.GET("/users/:id/reports", rcpt.ListUserReports)
+			authenticated.POST("/reports", rcpt.CreateReport)
+			authenticated.GET("/reports/:id", rcpt.GetReport)
+			authenticated.GET("/users/:id/reports", rcpt.ListUserReports)
+		}
+
+		staffAdmin := authenticated.Group("")
+		staffAdmin.Use(middleware.RequireRoles(models.RoleStaff, models.RoleAdmin))
+		{
+			staffAdmin.GET("/users", uc.ListUsers)
+			staffAdmin.POST("/tickets", tc.CreateTicket)
+			staffAdmin.PUT("/tickets/:id", tc.UpdateTicket)
+			staffAdmin.DELETE("/tickets/:id", tc.DeleteTicket)
+		}
+
+		adminOnly := authenticated.Group("")
+		adminOnly.Use(middleware.RequireRoles(models.RoleAdmin))
+		{
+			adminOnly.POST("/admin/users", uc.CreatePrivilegedUser)
+		}
 	}
 }
