@@ -7,6 +7,33 @@ definitions:
       user:
         $ref: '#/definitions/models.UserResponse'
     type: object
+  models.CreatePrivilegedUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/models.UserRole'
+        enum:
+        - admin
+        - staff
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    - role
+    type: object
   models.CreateUserRequest:
     properties:
       email:
@@ -139,6 +166,30 @@ info:
   title: KNTU DB Project API
   version: "1.0"
 paths:
+  /admin/users:
+    post:
+      consumes:
+      - application/json
+      description: Create a staff or admin user
+      parameters:
+      - description: Privileged user creation request
+        in: body
+        name: userRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreatePrivilegedUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Invalid request body
+      summary: Create privileged user
+      tags:
+      - users
   /auth/login:
     post:
       consumes:
