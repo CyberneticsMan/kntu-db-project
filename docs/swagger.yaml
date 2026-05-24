@@ -20,6 +20,13 @@ definitions:
         type: string
       phone:
         type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/models.UserRole'
+        enum:
+        - admin
+        - customer
+        - staff
     required:
     - email
     - first_name

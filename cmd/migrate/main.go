@@ -1,4 +1,4 @@
-package migrate
+package main
 
 import (
 	"context"
@@ -8,9 +8,14 @@ import (
 
 	"github.com/CyberneticsMan/kntu-db-project/config"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file loaded; using existing environment")
+	}
+
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)

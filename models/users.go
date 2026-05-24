@@ -57,9 +57,9 @@ func (u *User) Validate() error {
 
 func GetUserByID(db *pgxpool.Pool, id int) (*User, error) {
 	var u User
-	query := `SELECT id, first_name, last_name, email, phone, role FROM users WHERE id = $1`
+	query := `SELECT id, first_name, last_name, email, phone, password, role FROM users WHERE id = $1`
 
-	err := db.QueryRow(context.Background(), query, id).Scan(&u.ID, &u.FirstName, &u.LastName, &u.Email, &u.Phone, &u.Role)
+	err := db.QueryRow(context.Background(), query, id).Scan(&u.ID, &u.FirstName, &u.LastName, &u.Email, &u.Phone, &u.Password, &u.Role)
 	if err != nil {
 		return nil, err
 	}
@@ -68,9 +68,9 @@ func GetUserByID(db *pgxpool.Pool, id int) (*User, error) {
 
 func GetUserByEmail(db *pgxpool.Pool, email string) (*User, error) {
 	var u User
-	query := `SELECT id, first_name, last_name, email, phone, role FROM users WHERE email = $1`
+	query := `SELECT id, first_name, last_name, email, phone, password, role FROM users WHERE email = $1`
 
-	err := db.QueryRow(context.Background(), query, email).Scan(&u.ID, &u.FirstName, &u.LastName, &u.Email, &u.Phone, &u.Role)
+	err := db.QueryRow(context.Background(), query, email).Scan(&u.ID, &u.FirstName, &u.LastName, &u.Email, &u.Phone, &u.Password, &u.Role)
 	if err != nil {
 		return nil, err
 	}
@@ -82,8 +82,8 @@ func CreateUser(db *pgxpool.Pool, user *User) (*User, error) {
 		return nil, err
 	}
 
-	query := `INSERT INTO users (first_name, last_name, email, phone, role) VALUES ($1, $2, $3, $4, $5) RETURNING id`
-	err := db.QueryRow(context.Background(), query, user.FirstName, user.LastName, user.Email, user.Phone, user.Role).Scan(&user.ID)
+	query := `INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	err := db.QueryRow(context.Background(), query, user.FirstName, user.LastName, user.Email, user.Phone, user.Password, user.Role).Scan(&user.ID)
 	if err != nil {
 		return nil, err
 	}

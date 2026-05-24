@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"log"
 	"os"
 	"time"
 
@@ -31,20 +32,18 @@ func (s *AuthService) Register(req *models.RegisterRequest) (*models.User, error
 		return nil, errors.New("email already registered")
 	}
 
-	hashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return nil, err
-	}
-
+	// Create user without role - role will be assigned separately
 	user := &models.CreateUserRequest{
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Email:     req.Email,
 		Phone:     req.Phone,
-		Password:  string(hashed),
+		Password:  req.Password,
 	}
 
-	return s.UserService.Create(user)
+	log.Printf("Registering user: %+v", user) // Debug log
+
+	return s.UserService.CreateUser(user)
 }
 
 func (s *AuthService) Login(req *models.LoginRequest) (string, *models.User, error) {

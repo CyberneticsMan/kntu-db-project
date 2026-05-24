@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -52,10 +53,13 @@ func (uc *UserController) GetUser(c *gin.Context) {
 // @Router /users [post]
 func (uc *UserController) CreateUser(c *gin.Context) {
 	var req models.CreateUserRequest
+	log.Printf("CreateUser called")
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	log.Printf("CreateUser payload: %+v", req)
 
 	createdUser, err := uc.Service.CreateUser(&req)
 	if err != nil {

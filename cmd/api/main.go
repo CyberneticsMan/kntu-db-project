@@ -32,6 +32,7 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file")
 	}
+	log.SetOutput(os.Stdout)
 
 	// 2. Connect to database using pgxpool
 	dbURL := os.Getenv("DATABASE_URL")

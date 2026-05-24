@@ -300,6 +300,18 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string"
+                },
+                "role": {
+                    "enum": [
+                        "admin",
+                        "customer",
+                        "staff"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.UserRole"
+                        }
+                    ]
                 }
             }
         },
