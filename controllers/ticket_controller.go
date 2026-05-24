@@ -84,6 +84,7 @@ func (tc *TicketController) ListTickets(c *gin.Context) {
 // @Tags tickets
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param ticket body models.Ticket true "Ticket payload"
 // @Success 201 {object} models.Ticket
 // @Router /tickets [post]
@@ -109,6 +110,7 @@ func (tc *TicketController) CreateTicket(c *gin.Context) {
 // @Tags tickets
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param id path int true "Ticket ID"
 // @Param ticket body models.Ticket true "Ticket payload"
 // @Success 200 {object} models.Ticket
@@ -140,6 +142,7 @@ func (tc *TicketController) UpdateTicket(c *gin.Context) {
 // @Summary Delete ticket
 // @Description Delete a ticket by its ID
 // @Tags tickets
+// @Security Bearer
 // @Param id path int true "Ticket ID"
 // @Success 200 {object} map[string]string
 // @Router /tickets/{id} [delete]

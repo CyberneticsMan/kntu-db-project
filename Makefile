@@ -1,4 +1,4 @@
-.PHONY: help dev build run test clean swagger-gen
+.PHONY: help dev build run test clean swagger-gen admin-cli
 
 help:
 	@echo "Available commands:"
@@ -8,6 +8,7 @@ help:
 	@echo "  make test         - Run tests"
 	@echo "  make clean        - Clean build artifacts"
 	@echo "  make swagger-gen  - Generate Swagger documentation"
+	@echo "  make admin-cli    - Promote a user to admin (EMAIL=... or PHONE=...)"
 
 dev:
 	@echo "Starting development server with live reload..."
@@ -33,3 +34,16 @@ clean:
 swagger-gen:
 	@echo "Generating Swagger documentation..."
 	go run github.com/swaggo/swag/cmd/swag@latest init --generalInfo cmd/api/main.go --output docs
+
+admin-cli:
+	@echo "Promoting a user to admin..."
+	@if [ -n "$(EMAIL)" ]; then \
+		go run ./cmd/admin --email "$(EMAIL)"; \
+	elif [ -n "$(PHONE)" ]; then \
+		go run ./cmd/admin --phone "$(PHONE)"; \
+	elif [ -n "$(ARGS)" ]; then \
+		go run ./cmd/admin $(ARGS); \
+	else \
+		echo "Provide EMAIL=... or PHONE=... (or ARGS=\"--phone ...\")"; \
+		exit 1; \
+	fi

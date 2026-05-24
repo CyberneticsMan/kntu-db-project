@@ -24,12 +24,18 @@ func Auth() gin.HandlerFunc {
 		}
 
 		parts := strings.Fields(authorization)
-		if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
+		tokenString := ""
+		switch {
+		case len(parts) == 2 && strings.EqualFold(parts[0], "bearer"):
+			tokenString = parts[1]
+		case len(parts) == 1:
+			tokenString = parts[0]
+		default:
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid authorization header"})
 			return
 		}
 
-		token, err := jwt.Parse(parts[1], func(token *jwt.Token) (any, error) {
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, jwt.ErrSignatureInvalid
 			}

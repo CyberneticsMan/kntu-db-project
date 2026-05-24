@@ -76,3 +76,7 @@ func (us *UserService) Update(req *models.UpdateUserRequest) (*models.User, erro
 func (us *UserService) ListUsers() ([]*models.User, error) {
 	return models.ListUsers(us.DB)
 }
+
+func (us *UserService) PromoteToAdmin(email, phone string) (*models.User, error) {
+	return models.SetUserRoleByIdentifier(us.DB, models.RoleAdmin, email, phone)
+}

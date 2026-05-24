@@ -187,6 +187,8 @@ paths:
             $ref: '#/definitions/models.UserResponse'
         "400":
           description: Invalid request body
+      security:
+      - Bearer: []
       summary: Create privileged user
       tags:
       - users
@@ -273,6 +275,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.Ticket'
+      security:
+      - Bearer: []
       summary: Create ticket
       tags:
       - tickets
@@ -292,6 +296,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - Bearer: []
       summary: Delete ticket
       tags:
       - tickets
@@ -338,6 +344,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Ticket'
+      security:
+      - Bearer: []
       summary: Update ticket
       tags:
       - tickets
@@ -351,6 +359,8 @@ paths:
             items:
               $ref: '#/definitions/models.UserResponse'
             type: array
+      security:
+      - Bearer: []
       summary: List users
       tags:
       - users
@@ -374,6 +384,8 @@ paths:
             $ref: '#/definitions/models.UserResponse'
         "400":
           description: Invalid request body
+      security:
+      - Bearer: []
       summary: Create a new user
       tags:
       - users
@@ -393,6 +405,8 @@ paths:
           description: Invalid user ID
         "500":
           description: Server error
+      security:
+      - Bearer: []
       summary: Delete a user
       tags:
       - users
@@ -413,6 +427,8 @@ paths:
           description: Invalid user ID
         "404":
           description: User not found
+      security:
+      - Bearer: []
       summary: Get user by ID
       tags:
       - users
@@ -441,6 +457,8 @@ paths:
             $ref: '#/definitions/models.UserResponse'
         "400":
           description: Invalid request or user ID
+      security:
+      - Bearer: []
       summary: Update an existing user
       tags:
       - users

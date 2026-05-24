@@ -13,6 +13,7 @@ type ReportController struct {
 	Service *services.ReportService
 }
 
+// @Security Bearer
 func (rc *ReportController) CreateReport(c *gin.Context) {
 	var req models.CreateReportRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -29,6 +30,7 @@ func (rc *ReportController) CreateReport(c *gin.Context) {
 	c.JSON(http.StatusCreated, report)
 }
 
+// @Security Bearer
 func (rc *ReportController) GetReport(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -45,6 +47,7 @@ func (rc *ReportController) GetReport(c *gin.Context) {
 	c.JSON(http.StatusOK, report)
 }
 
+// @Security Bearer
 func (rc *ReportController) ListUserReports(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

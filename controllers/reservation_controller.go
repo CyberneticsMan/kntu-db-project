@@ -13,6 +13,7 @@ type ReservationController struct {
 	Service *services.ReservationService
 }
 
+// @Security Bearer
 func (rc *ReservationController) CreateReservation(c *gin.Context) {
 	var req models.CreateReservationRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -29,6 +30,7 @@ func (rc *ReservationController) CreateReservation(c *gin.Context) {
 	c.JSON(http.StatusCreated, reservation)
 }
 
+// @Security Bearer
 func (rc *ReservationController) GetReservation(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -45,6 +47,7 @@ func (rc *ReservationController) GetReservation(c *gin.Context) {
 	c.JSON(http.StatusOK, reservation)
 }
 
+// @Security Bearer
 func (rc *ReservationController) ListUserReservations(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -61,6 +64,7 @@ func (rc *ReservationController) ListUserReservations(c *gin.Context) {
 	c.JSON(http.StatusOK, reservations)
 }
 
+// @Security Bearer
 func (rc *ReservationController) CancelReservation(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -77,6 +81,7 @@ func (rc *ReservationController) CancelReservation(c *gin.Context) {
 	c.JSON(http.StatusOK, reservation)
 }
 
+// @Security Bearer
 func (rc *ReservationController) PayReservation(c *gin.Context) {
 	reservationID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

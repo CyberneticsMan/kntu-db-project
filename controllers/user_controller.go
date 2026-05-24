@@ -19,6 +19,7 @@ type UserController struct {
 // @Summary Get user by ID
 // @Description Get a user's details by their ID
 // @Tags users
+// @Security Bearer
 // @Param id path int true "User ID"
 // @Success 200 {object} models.UserResponse
 // @Failure 400 "Invalid user ID"
@@ -47,6 +48,7 @@ func (uc *UserController) GetUser(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param userRequest body models.CreateUserRequest true "User creation request"
 // @Success 201 {object} models.UserResponse
 // @Failure 400 "Invalid request body"
@@ -76,6 +78,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param userRequest body models.CreatePrivilegedUserRequest true "Privileged user creation request"
 // @Success 201 {object} models.UserResponse
 // @Failure 400 "Invalid request body"
@@ -102,6 +105,7 @@ func (uc *UserController) CreatePrivilegedUser(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param id path int true "User ID"
 // @Param userRequest body models.UpdateUserRequest true "User update request"
 // @Success 200 {object} models.UserResponse
@@ -135,6 +139,7 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 // @Summary List users
 // @Description Get all users in the system
 // @Tags users
+// @Security Bearer
 // @Success 200 {array} models.UserResponse
 // @Router /users [get]
 func (uc *UserController) ListUsers(c *gin.Context) {
@@ -156,6 +161,7 @@ func (uc *UserController) ListUsers(c *gin.Context) {
 // @Summary Delete a user
 // @Description Delete a user by their ID
 // @Tags users
+// @Security Bearer
 // @Param id path int true "User ID"
 // @Success 200 "User deleted successfully"
 // @Failure 400 "Invalid user ID"

@@ -14,6 +14,11 @@
     "paths": {
         "/admin/users": {
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create a staff or admin user",
                 "consumes": [
                     "application/json"
@@ -149,6 +154,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create a new ticket record",
                 "consumes": [
                     "application/json"
@@ -213,6 +223,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Update an existing ticket record",
                 "consumes": [
                     "application/json"
@@ -252,6 +267,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete a ticket by its ID",
                 "tags": [
                     "tickets"
@@ -281,6 +301,11 @@
         },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all users in the system",
                 "tags": [
                     "users"
@@ -299,6 +324,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create a new user with the provided details",
                 "consumes": [
                     "application/json"
@@ -336,6 +366,11 @@
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get a user's details by their ID",
                 "tags": [
                     "users"
@@ -366,6 +401,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Update a user's details",
                 "consumes": [
                     "application/json"
@@ -408,6 +448,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete a user by their ID",
                 "tags": [
                     "users"

@@ -28,6 +28,10 @@ Run the migrations with the migration command in `cmd/migrate`.
 
 Base path: `/api/v1`
 
+Protected routes require an `Authorization` header:
+
+- `Authorization: Bearer <jwt-from-login>`
+
 ### Auth
 
 - `POST /auth/register`
@@ -67,3 +71,17 @@ Base path: `/api/v1`
 
 - Build: `go build ./...`
 - Test: `go test ./...`
+
+## Admin CLI
+
+Promote an existing user to admin by email or phone:
+
+- `go run ./cmd/admin --email user@example.com`
+- `go run ./cmd/admin --phone 09123456789`
+
+You can also use:
+
+- `make admin-cli EMAIL=user@example.com`
+- `make admin-cli PHONE=09123456789`
+
+Note: `make admin-cli --phone 09123456789` is not valid GNU Make syntax; use `PHONE=...` instead.

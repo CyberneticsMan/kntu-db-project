@@ -27,6 +27,13 @@ func RequireRoles(allowed ...models.UserRole) gin.HandlerFunc {
 		}
 
 		if _, ok := allowedSet[role]; !ok {
+			// Admins inherit staff permissions.
+			if role == models.RoleAdmin {
+				if _, staffAllowed := allowedSet[models.RoleStaff]; staffAllowed {
+					c.Next()
+					return
+				}
+			}
 			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "forbidden"})
 			return
 		}

@@ -134,3 +134,32 @@ func ListUsers(db *pgxpool.Pool) ([]*User, error) {
 
 	return users, nil
 }
+
+func SetUserRoleByIdentifier(db *pgxpool.Pool, role UserRole, email, phone string) (*User, error) {
+	if !role.IsValid() {
+		return nil, fmt.Errorf("invalid role: %s", role)
+	}
+
+	var (
+		query string
+		arg   string
+	)
+
+	switch {
+	case email != "":
+		query = `UPDATE users SET role = $1 WHERE email = $2 RETURNING id, first_name, last_name, email, phone, password, role`
+		arg = email
+	case phone != "":
+		query = `UPDATE users SET role = $1 WHERE phone = $2 RETURNING id, first_name, last_name, email, phone, password, role`
+		arg = phone
+	default:
+		return nil, fmt.Errorf("email or phone is required")
+	}
+
+	var u User
+	if err := db.QueryRow(context.Background(), query, role, arg).Scan(&u.ID, &u.FirstName, &u.LastName, &u.Email, &u.Phone, &u.Password, &u.Role); err != nil {
+		return nil, err
+	}
+
+	return &u, nil
+}

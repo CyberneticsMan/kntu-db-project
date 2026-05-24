@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/admin/users": {
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create a staff or admin user",
                 "consumes": [
                     "application/json"
@@ -152,6 +157,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create a new ticket record",
                 "consumes": [
                     "application/json"
@@ -216,6 +226,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Update an existing ticket record",
                 "consumes": [
                     "application/json"
@@ -255,6 +270,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete a ticket by its ID",
                 "tags": [
                     "tickets"
@@ -284,6 +304,11 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all users in the system",
                 "tags": [
                     "users"
@@ -302,6 +327,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create a new user with the provided details",
                 "consumes": [
                     "application/json"
@@ -339,6 +369,11 @@ const docTemplate = `{
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get a user's details by their ID",
                 "tags": [
                     "users"
@@ -369,6 +404,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Update a user's details",
                 "consumes": [
                     "application/json"
@@ -411,6 +451,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete a user by their ID",
                 "tags": [
                     "users"
