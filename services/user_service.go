@@ -35,3 +35,26 @@ func (us *UserService) UpdateUser(req *models.UpdateUserRequest) (*models.User, 
 func (us *UserService) DeleteUser(id int) error {
 	return models.DeleteUser(us.DB, id)
 }
+
+func (us *UserService) GetByEmail(email string) (*models.User, error) {
+	return models.GetUserByEmail(us.DB, email)
+}
+
+func (us *UserService) Create(req *models.CreateUserRequest) (*models.User, error) {
+	user := req.ToModel()
+	if err := user.Validate(); err != nil {
+		return nil, err
+	}
+	return models.CreateUser(us.DB, user)
+}
+
+func (us *UserService) Update(req *models.UpdateUserRequest) (*models.User, error) {
+	user := req.ToModel()
+	if err := user.Validate(); err != nil {
+		return nil, err
+	}
+	if err := models.UpdateUser(us.DB, user); err != nil {
+		return nil, err
+	}
+	return user, nil
+}

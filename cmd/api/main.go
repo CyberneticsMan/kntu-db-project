@@ -38,8 +38,11 @@ func main() {
 	ticketController := &controllers.TicketController{Service: ticketService}
 	userController := &controllers.UserController{Service: userService}
 
+	authService := services.NewAuthService(userService)
+	authController := controllers.NewAuthController(authService)
+
 	// 5. Define routes
-	routes.SetupRoutes(router, ticketController, userController)
+	routes.SetupRoutes(router, ticketController, userController, authController)
 
 	// 6. Run server
 	router.Run(":8080")

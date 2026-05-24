@@ -5,17 +5,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(router *gin.Engine, tc *controllers.TicketController, uc *controllers.UserController) {
+func SetupRoutes(router *gin.Engine, tc *controllers.TicketController, uc *controllers.UserController, ac *controllers.AuthController) {
 	api := router.Group("/api/v1")
 	{
-		api.GET("/tickets/:id", tc.GetTicket)
-		// Additional routes can be added here
+		api.POST("/auth/register", ac.Register)
+		api.POST("/auth/login", ac.Login)
 
-		// User routes
+		api.GET("/tickets/:id", tc.GetTicket)
 		api.GET("/users/:id", uc.GetUser)
 		api.POST("/users", uc.CreateUser)
 		api.PUT("/users", uc.UpdateUser)
 		api.DELETE("/users/:id", uc.DeleteUser)
-
 	}
 }
