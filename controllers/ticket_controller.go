@@ -4,19 +4,17 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/CyberneticsMan/kntu-db-project/models"
+	"github.com/CyberneticsMan/kntu-db-project/services"
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// TicketController holds the database dependency
+// TicketController holds the service dependency
 type TicketController struct {
-	DB *pgxpool.Pool
+	Service *services.TicketService
 }
 
 // GetTicket handles the GET request for a single ticket
 func (tc *TicketController) GetTicket(c *gin.Context) {
-	// 1. Extract the ID from the URL parameter
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
@@ -24,14 +22,11 @@ func (tc *TicketController) GetTicket(c *gin.Context) {
 		return
 	}
 
-	// 2. Call the Model layer to fetch the data
-	ticket, err := models.GetTicketByID(tc.DB, id)
+	ticket, err := tc.Service.GetTicketByID(id)
 	if err != nil {
-		// Log the error internally and return a generic message
 		c.JSON(http.StatusNotFound, gin.H{"error": "Ticket not found"})
 		return
 	}
 
-	// 3. Return the data as JSON
 	c.JSON(http.StatusOK, ticket)
 }

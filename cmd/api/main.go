@@ -11,6 +11,7 @@ import (
 
 	"github.com/CyberneticsMan/kntu-db-project/controllers"
 	"github.com/CyberneticsMan/kntu-db-project/routes"
+	"github.com/CyberneticsMan/kntu-db-project/services"
 )
 
 func main() {
@@ -30,11 +31,15 @@ func main() {
 	// 3. Initialize Gin router
 	router := gin.Default()
 
-	// 4. Dependency injection for controllers
-	ticketController := &controllers.TicketController{DB: dbPool}
+	// 4. Dependency injection for services and controllers
+	ticketService := &services.TicketService{DB: dbPool}
+	userService := &services.UserService{DB: dbPool}
+
+	ticketController := &controllers.TicketController{Service: ticketService}
+	userController := &controllers.UserController{Service: userService}
 
 	// 5. Define routes
-	routes.SetupRoutes(router, ticketController)
+	routes.SetupRoutes(router, ticketController, userController)
 
 	// 6. Run server
 	router.Run(":8080")

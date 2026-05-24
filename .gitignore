@@ -1,0 +1,22 @@
+# Typical .gitignore file for a Go project
+.env
+*.log
+*.sql
+*.sqlite
+*.db
+*.bak
+*.tmp
+*.swp
+*.DS_Store
+output/
+bin/
+vendor/
+.idea/
+.vscode/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.coverprofile
+*.out
