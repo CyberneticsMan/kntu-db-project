@@ -41,7 +41,6 @@ func (s *AuthService) Register(req *models.RegisterRequest) (*models.User, error
 		LastName:  req.LastName,
 		Email:     req.Email,
 		Phone:     req.Phone,
-		Role:      req.Role,
 		Password:  string(hashed),
 	}
 

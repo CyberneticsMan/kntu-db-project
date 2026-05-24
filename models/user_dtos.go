@@ -5,7 +5,7 @@ type CreateUserRequest struct {
 	LastName  string   `json:"last_name" binding:"required"`
 	Email     string   `json:"email" binding:"required,email"`
 	Phone     string   `json:"phone" binding:"required"`
-	Role      UserRole `json:"role" binding:"required,oneof=admin customer staff"`
+	Role      UserRole `json:"role" binding:"oneof=admin customer staff"`
 	Password  string   `json:"password" binding:"required,min=8"`
 }
 

@@ -57,6 +57,11 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 		return
 	}
 
+	// Set default role to customer if not provided
+	if req.Role == "" {
+		req.Role = models.RoleCustomer
+	}
+
 	createdUser, err := uc.Service.CreateUser(&req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
