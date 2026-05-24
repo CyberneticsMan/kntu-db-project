@@ -1,3 +1,52 @@
-### KNTU project for db class
+# KNTU DB Project
 
-language : Go
+Go + Gin backend for a sports ticket reservation platform.
+
+## Features implemented
+
+- User registration and login with JWT
+- User CRUD endpoints
+- Ticket CRUD endpoints
+- Ticket listing and simple search/filtering
+- PostgreSQL migrations for users, tickets, reservations, payments, and reports
+
+## Environment
+
+Copy `.env` and adjust the values if needed:
+
+- `DATABASE_URL`
+- `JWT_SECRET`
+
+## Database setup
+
+Run the migrations with the migration command in `cmd/migrate`.
+
+## API routes
+
+Base path: `/api/v1`
+
+### Auth
+
+- `POST /auth/register`
+- `POST /auth/login`
+
+### Users
+
+- `GET /users`
+- `GET /users/:id`
+- `POST /users`
+- `PUT /users/:id`
+- `DELETE /users/:id`
+
+### Tickets
+
+- `GET /tickets`
+- `GET /tickets/:id`
+- `POST /tickets`
+- `PUT /tickets/:id`
+- `DELETE /tickets/:id`
+
+## Development
+
+- Build: `go build ./...`
+- Test: `go test ./...`

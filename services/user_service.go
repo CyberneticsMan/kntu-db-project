@@ -19,11 +19,11 @@ func (us *UserService) GetUserByID(id int) (*models.User, error) {
 func (us *UserService) CreateUser(req *models.CreateUserRequest) (*models.User, error) {
 	user := req.ToModel()
 	log.Printf("Received user creation request: %+v\n", user) // Debug log
-	user.Role = models.RoleCustomer                           // Default role for new users
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
 	}
+	user.Role = models.RoleCustomer
 	user.Password = string(hashedPassword)
 	log.Printf("Creating user: %+v\n", user) // Debug log
 	if err := user.Validate(); err != nil {
@@ -60,4 +60,8 @@ func (us *UserService) Update(req *models.UpdateUserRequest) (*models.User, erro
 		return nil, err
 	}
 	return user, nil
+}
+
+func (us *UserService) ListUsers() ([]*models.User, error) {
+	return models.ListUsers(us.DB)
 }

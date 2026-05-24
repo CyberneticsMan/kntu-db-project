@@ -27,6 +27,11 @@ type User struct {
 	Role      UserRole `json:"role"` // Use the custom type here
 }
 
+type UserTicker struct {
+	UserID   int `json:"user_id"`
+	TicketID int `json:"ticket_id"`
+}
+
 // IsValid checks if the provided role is one of the allowed constants
 func (r UserRole) IsValid() bool {
 	switch r {
@@ -104,4 +109,28 @@ func DeleteUser(db *pgxpool.Pool, id int) error {
 	query := `DELETE FROM users WHERE id = $1`
 	_, err := db.Exec(context.Background(), query, id)
 	return err
+}
+
+func ListUsers(db *pgxpool.Pool) ([]*User, error) {
+	query := `SELECT id, first_name, last_name, email, phone, password, role FROM users ORDER BY id ASC`
+	rows, err := db.Query(context.Background(), query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	users := make([]*User, 0)
+	for rows.Next() {
+		var u User
+		if err := rows.Scan(&u.ID, &u.FirstName, &u.LastName, &u.Email, &u.Phone, &u.Password, &u.Role); err != nil {
+			return nil, err
+		}
+		users = append(users, &u)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }

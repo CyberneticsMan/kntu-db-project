@@ -4,10 +4,12 @@ import (
 	"errors"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/CyberneticsMan/kntu-db-project/models"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/jackc/pgx/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -23,16 +25,17 @@ func NewAuthService(userService *UserService) *AuthService {
 	}
 }
 
-func (s *AuthService) Register(req *models.RegisterRequest) (*models.User, error) {
+func (s *AuthService) Register(req *models.RegisterRequest) (string, *models.User, error) {
 	if req == nil {
-		return nil, errors.New("request is nil")
+		return "", nil, errors.New("request is nil")
 	}
 
-	if existing, _ := s.UserService.GetByEmail(req.Email); existing != nil {
-		return nil, errors.New("email already registered")
+	if existing, err := s.UserService.GetByEmail(req.Email); err == nil && existing != nil {
+		return "", nil, errors.New("email already registered")
+	} else if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return "", nil, err
 	}
 
-	// Create user without role - role will be assigned separately
 	user := &models.CreateUserRequest{
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
@@ -43,7 +46,17 @@ func (s *AuthService) Register(req *models.RegisterRequest) (*models.User, error
 
 	log.Printf("Registering user: %+v", user) // Debug log
 
-	return s.UserService.CreateUser(user)
+	createdUser, err := s.UserService.CreateUser(user)
+	if err != nil {
+		return "", nil, err
+	}
+
+	token, err := s.generateJWT(createdUser)
+	if err != nil {
+		return "", nil, err
+	}
+
+	return token, createdUser, nil
 }
 
 func (s *AuthService) Login(req *models.LoginRequest) (string, *models.User, error) {
@@ -66,7 +79,7 @@ func (s *AuthService) Login(req *models.LoginRequest) (string, *models.User, err
 
 func (s *AuthService) generateJWT(user *models.User) (string, error) {
 	claims := jwt.RegisteredClaims{
-		Subject:   string(rune(user.ID)),
+		Subject:   strconv.Itoa(user.ID),
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(72 * time.Hour)),
 		IssuedAt:  jwt.NewNumericDate(time.Now()),
 	}
@@ -74,6 +87,7 @@ func (s *AuthService) generateJWT(user *models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":   user.ID,
 		"email": user.Email,
+		"role":  user.Role,
 		"exp":   claims.ExpiresAt.Unix(),
 	})
 
