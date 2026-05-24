@@ -14,6 +14,14 @@ type TicketController struct {
 }
 
 // GetTicket handles the GET request for a single ticket
+// @Summary Get ticket by ID
+// @Description Get a ticket's details by its ID
+// @Tags tickets
+// @Param id path int true "Ticket ID"
+// @Success 200 {object} models.Ticket
+// @Failure 400 "Invalid ticket ID"
+// @Failure 404 "Ticket not found"
+// @Router /tickets/{id} [get]
 func (tc *TicketController) GetTicket(c *gin.Context) {
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)

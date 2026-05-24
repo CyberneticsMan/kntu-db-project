@@ -8,11 +8,24 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/CyberneticsMan/kntu-db-project/controllers"
+	_ "github.com/CyberneticsMan/kntu-db-project/docs" // This line is important for swagger initialization
 	"github.com/CyberneticsMan/kntu-db-project/routes"
 	"github.com/CyberneticsMan/kntu-db-project/services"
 )
+
+// @title           KNTU DB Project API
+// @version         1.0
+// @description     A Go Gin API for managing tickets and users
+// @basePath         /api/v1
+// @schemes http https
+// @securityDefinitions.apikey  Bearer
+// @in                          header
+// @name                        Authorization
+// @description                 Enter the token with the `Bearer: ` prefix, e.g. "Bearer abcde12345"
 
 func main() {
 	// 1. Load environment variables from .env file
@@ -41,9 +54,12 @@ func main() {
 	authService := services.NewAuthService(userService)
 	authController := controllers.NewAuthController(authService)
 
-	// 5. Define routes
+	// 5. Setup Swagger docs
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// 6. Define routes
 	routes.SetupRoutes(router, ticketController, userController, authController)
 
-	// 6. Run server
+	// 7. Run server
 	router.Run(":8080")
 }

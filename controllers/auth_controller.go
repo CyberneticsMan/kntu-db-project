@@ -16,6 +16,16 @@ func NewAuthController(authService *services.AuthService) *AuthController {
 	return &AuthController{AuthService: authService}
 }
 
+// Register handles user registration
+// @Summary Register a new user
+// @Description Create a new user account with email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param registerRequest body models.RegisterRequest true "Register request"
+// @Success 201 {object} models.AuthResponse
+// @Failure 400 "Invalid request or user already exists"
+// @Router /auth/register [post]
 func (ac *AuthController) Register(c *gin.Context) {
 	var req models.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -35,6 +45,17 @@ func (ac *AuthController) Register(c *gin.Context) {
 	})
 }
 
+// Login handles user login
+// @Summary User login
+// @Description Authenticate user with email and password, returns JWT token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param loginRequest body models.LoginRequest true "Login request"
+// @Success 200 {object} models.AuthResponse "Login successful with JWT token"
+// @Failure 400 "Invalid request"
+// @Failure 401 "Invalid credentials"
+// @Router /auth/login [post]
 func (ac *AuthController) Login(c *gin.Context) {
 	var req models.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

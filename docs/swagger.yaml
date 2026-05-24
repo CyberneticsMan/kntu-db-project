@@ -1,0 +1,313 @@
+basePath: /api/v1
+definitions:
+  models.AuthResponse:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/models.UserResponse'
+    type: object
+  models.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/models.UserRole'
+        enum:
+        - admin
+        - customer
+        - staff
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    - role
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.RegisterRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/models.UserRole'
+        enum:
+        - admin
+        - customer
+        - staff
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    - role
+    type: object
+  models.Ticket:
+    properties:
+      event_name:
+        type: string
+      id:
+        type: integer
+      price:
+        type: number
+    type: object
+  models.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone:
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/models.UserRole'
+        enum:
+        - admin
+        - customer
+        - staff
+    required:
+    - email
+    - first_name
+    - last_name
+    - phone
+    - role
+    type: object
+  models.UserResponse:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone:
+        type: string
+      role:
+        $ref: '#/definitions/models.UserRole'
+    type: object
+  models.UserRole:
+    enum:
+    - admin
+    - customer
+    - staff
+    type: string
+    x-enum-varnames:
+    - RoleAdmin
+    - RoleCustomer
+    - RoleStaff
+info:
+  contact: {}
+  description: A Go Gin API for managing tickets and users
+  title: KNTU DB Project API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with email and password, returns JWT token
+      parameters:
+      - description: Login request
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful with JWT token
+          schema:
+            $ref: '#/definitions/models.AuthResponse'
+        "400":
+          description: Invalid request
+        "401":
+          description: Invalid credentials
+      summary: User login
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account with email and password
+      parameters:
+      - description: Register request
+        in: body
+        name: registerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AuthResponse'
+        "400":
+          description: Invalid request or user already exists
+      summary: Register a new user
+      tags:
+      - auth
+  /tickets/{id}:
+    get:
+      description: Get a ticket's details by its ID
+      parameters:
+      - description: Ticket ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Ticket'
+        "400":
+          description: Invalid ticket ID
+        "404":
+          description: Ticket not found
+      summary: Get ticket by ID
+      tags:
+      - tickets
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided details
+      parameters:
+      - description: User creation request
+        in: body
+        name: userRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Invalid request body
+      summary: Create a new user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Delete a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: User deleted successfully
+        "400":
+          description: Invalid user ID
+        "500":
+          description: Server error
+      summary: Delete a user
+      tags:
+      - users
+    get:
+      description: Get a user's details by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Invalid user ID
+        "404":
+          description: User not found
+      summary: Get user by ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update a user's details
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User update request
+        in: body
+        name: userRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Invalid request or user ID
+      summary: Update an existing user
+      tags:
+      - users
+schemes:
+- http
+- https
+securityDefinitions:
+  Bearer:
+    description: 'Enter the token with the `Bearer: ` prefix, e.g. "Bearer abcde12345"'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
