@@ -8,7 +8,10 @@ Go + Gin backend for a sports ticket reservation platform.
 - User CRUD endpoints
 - Ticket CRUD endpoints
 - Ticket listing and simple search/filtering
+- Reservation creation, cancelation, and payment endpoints
+- Ticket issue reporting endpoints
 - PostgreSQL migrations for users, tickets, reservations, payments, and reports
+- New users created through registration or `/users` default to the `customer` role
 
 ## Environment
 
@@ -45,6 +48,20 @@ Base path: `/api/v1`
 - `POST /tickets`
 - `PUT /tickets/:id`
 - `DELETE /tickets/:id`
+
+### Reservations
+
+- `POST /reservations`
+- `GET /reservations/:id`
+- `GET /users/:userId/reservations`
+- `POST /reservations/:id/cancel`
+- `POST /reservations/:id/pay`
+
+### Reports
+
+- `POST /reports`
+- `GET /reports/:id`
+- `GET /users/:userId/reports`
 
 ## Development
 

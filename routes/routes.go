@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(router *gin.Engine, tc *controllers.TicketController, uc *controllers.UserController, ac *controllers.AuthController) {
+func SetupRoutes(router *gin.Engine, tc *controllers.TicketController, uc *controllers.UserController, ac *controllers.AuthController, rc *controllers.ReservationController, rcpt *controllers.ReportController) {
 	api := router.Group("/api/v1")
 	{
 		api.POST("/auth/register", ac.Register)
@@ -22,5 +22,15 @@ func SetupRoutes(router *gin.Engine, tc *controllers.TicketController, uc *contr
 		api.POST("/users", uc.CreateUser)
 		api.PUT("/users/:id", uc.UpdateUser)
 		api.DELETE("/users/:id", uc.DeleteUser)
+
+		api.POST("/reservations", rc.CreateReservation)
+		api.GET("/reservations/:id", rc.GetReservation)
+		api.GET("/users/:id/reservations", rc.ListUserReservations)
+		api.POST("/reservations/:id/cancel", rc.CancelReservation)
+		api.POST("/reservations/:id/pay", rc.PayReservation)
+
+		api.POST("/reports", rcpt.CreateReport)
+		api.GET("/reports/:id", rcpt.GetReport)
+		api.GET("/users/:id/reports", rcpt.ListUserReports)
 	}
 }

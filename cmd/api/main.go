@@ -48,9 +48,13 @@ func main() {
 	// 4. Dependency injection for services and controllers
 	ticketService := &services.TicketService{DB: dbPool}
 	userService := &services.UserService{DB: dbPool}
+	reservationService := &services.ReservationService{DB: dbPool}
+	reportService := &services.ReportService{DB: dbPool}
 
 	ticketController := &controllers.TicketController{Service: ticketService}
 	userController := &controllers.UserController{Service: userService}
+	reservationController := &controllers.ReservationController{Service: reservationService}
+	reportController := &controllers.ReportController{Service: reportService}
 
 	authService := services.NewAuthService(userService)
 	authController := controllers.NewAuthController(authService)
@@ -59,7 +63,7 @@ func main() {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// 6. Define routes
-	routes.SetupRoutes(router, ticketController, userController, authController)
+	routes.SetupRoutes(router, ticketController, userController, authController, reservationController, reportController)
 
 	// 7. Run server
 	router.Run(":8080")
