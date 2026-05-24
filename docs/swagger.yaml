@@ -20,20 +20,12 @@ definitions:
         type: string
       phone:
         type: string
-      role:
-        allOf:
-        - $ref: '#/definitions/models.UserRole'
-        enum:
-        - admin
-        - customer
-        - staff
     required:
     - email
     - first_name
     - last_name
     - password
     - phone
-    - role
     type: object
   models.LoginRequest:
     properties:
@@ -58,20 +50,12 @@ definitions:
         type: string
       phone:
         type: string
-      role:
-        allOf:
-        - $ref: '#/definitions/models.UserRole'
-        enum:
-        - admin
-        - customer
-        - staff
     required:
     - email
     - first_name
     - last_name
     - password
     - phone
-    - role
     type: object
   models.Ticket:
     properties:

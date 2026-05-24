@@ -279,8 +279,7 @@
                 "first_name",
                 "last_name",
                 "password",
-                "phone",
-                "role"
+                "phone"
             ],
             "properties": {
                 "email": {
@@ -298,18 +297,6 @@
                 },
                 "phone": {
                     "type": "string"
-                },
-                "role": {
-                    "enum": [
-                        "admin",
-                        "customer",
-                        "staff"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.UserRole"
-                        }
-                    ]
                 }
             }
         },
@@ -335,8 +322,7 @@
                 "first_name",
                 "last_name",
                 "password",
-                "phone",
-                "role"
+                "phone"
             ],
             "properties": {
                 "email": {
@@ -354,18 +340,6 @@
                 },
                 "phone": {
                     "type": "string"
-                },
-                "role": {
-                    "enum": [
-                        "admin",
-                        "customer",
-                        "staff"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.UserRole"
-                        }
-                    ]
                 }
             }
         },

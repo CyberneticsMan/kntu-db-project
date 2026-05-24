@@ -18,6 +18,7 @@ func (us *UserService) CreateUser(req *models.CreateUserRequest) (*models.User, 
 	if err := user.Validate(); err != nil {
 		return nil, err
 	}
+	user.Role = models.RoleCustomer // Default role for new users
 	return models.CreateUser(us.DB, user)
 }
 

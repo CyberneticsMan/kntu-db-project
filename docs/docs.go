@@ -282,8 +282,7 @@ const docTemplate = `{
                 "first_name",
                 "last_name",
                 "password",
-                "phone",
-                "role"
+                "phone"
             ],
             "properties": {
                 "email": {
@@ -301,18 +300,6 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string"
-                },
-                "role": {
-                    "enum": [
-                        "admin",
-                        "customer",
-                        "staff"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.UserRole"
-                        }
-                    ]
                 }
             }
         },
@@ -338,8 +325,7 @@ const docTemplate = `{
                 "first_name",
                 "last_name",
                 "password",
-                "phone",
-                "role"
+                "phone"
             ],
             "properties": {
                 "email": {
@@ -357,18 +343,6 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string"
-                },
-                "role": {
-                    "enum": [
-                        "admin",
-                        "customer",
-                        "staff"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.UserRole"
-                        }
-                    ]
                 }
             }
         },

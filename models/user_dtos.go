@@ -5,7 +5,6 @@ type CreateUserRequest struct {
 	LastName  string   `json:"last_name" binding:"required"`
 	Email     string   `json:"email" binding:"required,email"`
 	Phone     string   `json:"phone" binding:"required"`
-	Role      UserRole `json:"role" binding:"oneof=admin customer staff"`
 	Password  string   `json:"password" binding:"required,min=8"`
 }
 
@@ -33,7 +32,6 @@ func (r *CreateUserRequest) ToModel() *User {
 		LastName:  r.LastName,
 		Email:     r.Email,
 		Phone:     r.Phone,
-		Role:      r.Role,
 	}
 }
 
